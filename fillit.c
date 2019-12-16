@@ -6,48 +6,94 @@
 /*   By: kdagmer <kdagmer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/23 16:30:35 by kdagmer           #+#    #+#             */
-/*   Updated: 2019/12/10 10:49:29 by kdagmer          ###   ########.fr       */
+/*   Updated: 2019/12/16 14:03:36 by kdagmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static int		place(t_tetris *tetris, t_piece *tet)
+void			print_map(t_tetris *tetris);
+
+/*static int		removelast(t_tetris *tetris, t_piece *tet)
+{
+	return (0);
+}*/
+
+static int		addtomap(t_tetris *tetris, t_piece *tet)
 {
 	int y;
 	int x;
+	int ok;
 
 	y = 0;
-	if (tetris->map[tet->y][tet->x] == TEMPTY)
+	ok = 0;
+	printf("h: %d\n", tet->height);
+	printf("w: %d\n", tet->width);
+	while (y < tet->height)
 	{
-		while (y < tet->height)
+		x = 0;
+		while (x < tet->width)
 		{
-			x = 0;
-			while (x < tet->width)
+			printf("x: %d\n", x);
+			printf("y: %d\n", y);
+			if (tetris->map[y][x] == TEMPTY && tet->map[y][x] != TEMPTY)
 			{
 				tetris->map[y][x] = tet->map[y][x];
-				x++;
+				print_map(tetris);
+				ok = 1;
 			}
-			y++;
+			else if (tetris->map[y][x] != TEMPTY)
+			{
+				ok = 0;
+			}
+			x++;
 		}
+		y++;
+	}
+	if (ok == 1)
+		return (1);
+	return (0);
+}
+
+/*
+									  solver (if placer 0 : size++)
+										|
+										placer (if addtomap 1 : placer)
+										/
+								addtomap
+								/		\
+			if 1 : placer next tet		if 0 : removelast
+*/
+
+static int		placer(t_tetris *tetris, t_piece *tet)
+{
+	tet->y = 0;
+	tet->x = 0;
+	printf("htet: %d\n", tet->height);
+	printf("wtet: %d\n", tet->width);
+	while (tet->y + tet->height <= tetris->size)
+	{
+		tet->x = 0;
+		while (tet->x + tet->width <= tetris->size)
+		{
+			if (addtomap(tetris, tet))
+				if (placer(tetris, tet->next))
+					return (1);
+			tet->x++;
+		}
+		tet->y++;
 	}
 	return (0);
 }
 
-void			solve(t_tetris *tetris)
+void			solver(t_tetris *tetris)
 {
-	while (tetris->pieces->y + tetris->pieces->height > tetris->size || \
-			tetris->pieces->x + tetris->pieces->width > tetris->size)
+	while (!placer(tetris, tetris->pieces))
 	{
-		printf("h%d\n", tetris->pieces->height);
-		printf("w%d\n", tetris->pieces->width);
-		printf("s%d\n", tetris->size);
 		tetris->size++;
+		printf("tetsize: %d\n", tetris->size);
+		print_map(tetris);
 	}
-	printf("h%d\n", tetris->pieces->height);
-	printf("w%d\n", tetris->pieces->width);
-	printf("s%d\n", tetris->size);
-	place(tetris, tetris->pieces);
 }
 
 void			print_map(t_tetris *tetris)
@@ -79,7 +125,7 @@ int				main(int ac, char **av)
 	}
 	if (tet_create(&tetris, av[1]))
 	{
-		solve(&tetris);
+		solver(&tetris);
 		printf("\n\n\n--------print map--------\n\n\n");
 		print_map(&tetris);
 		printf("\n\n\n");

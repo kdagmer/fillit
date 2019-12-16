@@ -6,7 +6,7 @@
 /*   By: kdagmer <kdagmer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 10:44:28 by kdagmer           #+#    #+#             */
-/*   Updated: 2019/12/10 13:03:34 by kdagmer          ###   ########.fr       */
+/*   Updated: 2019/12/12 14:01:19 by kdagmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int				tet_create(t_tetris *tetris, char *file)
 	if (check_file(tetris, file))
 	{
 		map(tetris, 4 * tetris->nb_pieces);
-		while (sd * sd < tetris->nb_pieces)
+		while (sd * sd < 4 * tetris->nb_pieces)
 			sd++;
-		tetris->size = sd * 2; // -1
-		printf("tetsize: %d\n", tetris->size);
+		tetris->size = sd; // -1
+		printf("tetsize: %dx%d\n", tetris->size, tetris->size);
 		return (1);
-	}
+	} 
 	return (0);
 }
