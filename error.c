@@ -6,7 +6,7 @@
 /*   By: kdagmer <kdagmer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:24:21 by kdagmer           #+#    #+#             */
-/*   Updated: 2019/11/24 16:30:48 by kdagmer          ###   ########.fr       */
+/*   Updated: 2019/12/25 15:46:55 by kdagmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,5 @@ void	print_error(int n)
 		ft_putstr_fd(ERR1, 1);
 	else if (n == 2)
 		ft_putstr_fd(ERR2, 1);
-	else if (n == 3)
-		ft_putstr_fd(ERR3, 1); // remove
 	exit(1);
 }

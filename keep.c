@@ -6,7 +6,7 @@
 /*   By: kdagmer <kdagmer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 16:51:48 by kdagmer           #+#    #+#             */
-/*   Updated: 2019/12/10 12:00:19 by kdagmer          ###   ########.fr       */
+/*   Updated: 2019/12/27 13:51:17 by kdagmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,30 @@ static t_point	get_points(char *buff)
 	return (point);
 }
 
-static t_piece	*get_piece(char *buff)
+static int		fill_piece(t_piece *newp, t_point ps)
+{
+	newp->x = 0;
+	newp->y = 0;
+	newp->next = NULL;
+	newp->width = ps.x1 - ps.x0 + 1;
+	newp->height = ps.y1 - ps.y0 + 1;
+	return (0);
+}
+
+static t_piece	*get_piece(char *buff, int y, int x)
 {
 	t_piece		*newp;
 	t_point		ps;
-	int			y;
-	int			x;
-	static char	c = 'a';
+	static char	c = 'A';
 
 	if (!(newp = (t_piece *)ft_memalloc(sizeof(t_piece))))
 		print_error(1);
-	newp->x = 0;
-	newp->y = 0;
-	newp->letter = c++;
-	newp->next = NULL;
 	ps = get_points(buff);
-	newp->width = ps.x1 - ps.x0 + 1;
-	newp->height = ps.y1 - ps.y0 + 1;
+	newp->letter = c++ + fill_piece(newp, ps);
 	if (!(newp->map = (char **)malloc((newp->height + 1) * sizeof(char *))))
 		print_error(1);
-	y = 0;
-	while (y < newp->height)
+	while (y < newp->height && !(x *= 0))
 	{
-		x = 0;
 		newp->map[y] = ft_strnew(newp->width);
 		while (x < newp->width)
 		{
@@ -83,7 +84,7 @@ void			keep(t_tetris *tetris, char *buff)
 	t_piece *next;
 	t_piece *temp;
 
-	next = get_piece(buff);
+	next = get_piece(buff, 0, 0);
 	temp = tetris->pieces;
 	if (temp == NULL)
 	{

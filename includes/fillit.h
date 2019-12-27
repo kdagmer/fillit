@@ -6,7 +6,7 @@
 /*   By: kdagmer <kdagmer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:03:11 by kdagmer           #+#    #+#             */
-/*   Updated: 2019/12/10 10:45:49 by kdagmer          ###   ########.fr       */
+/*   Updated: 2019/12/26 11:39:56 by kdagmer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 
 # include "libft.h"
 # include <fcntl.h>
-# include <stdio.h> // remove
 
 # define TBLOCK '#'
 # define TEMPTY '.'
 
 # define ERR1 "error\n"
 # define ERR2 "usage: ./fillit source_file\n"
-# define ERR3 "flag err\n" // remove
 
 typedef struct		s_point
 {
@@ -55,5 +53,7 @@ void				print_error(int n);
 int					check_file(t_tetris *tetris, char *file);
 void				keep(t_tetris *tetris, char *buff);
 int					tet_create(t_tetris *tetris, char *file);
+void				print_map(t_tetris *tetris);
+void				free_map(t_tetris *tetris);
 
 #endif
